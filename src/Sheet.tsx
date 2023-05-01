@@ -8,7 +8,7 @@ function Sheet() {
   const [, setParsedData] = useState([]);
 
   //State to store table Column name
-  const [tableRows, setTableRows] = useState([]);
+  const [, setTableRows] = useState([]);
 
   //State to store the values
   const [values, setValues] = useState([]);
