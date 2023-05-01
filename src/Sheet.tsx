@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Papa from "papaparse";
+import { CSVLink } from "react-csv";
 import { AppData } from "./types";
 
 function Sheet() {
@@ -50,8 +51,9 @@ function Sheet() {
           (row: any) => row["ID"] && /^\d+$/.test(row["ID"])
         );
 
-        setInterval(() => {
-          if (take < rowsWithIds.length) {
+        const refreshId = setInterval(() => {
+          if (take <= rowsWithIds.length) {
+            console.log(take, rowsWithIds.length);
             ids = rowsWithIds.slice(take - 200, take).map((row: any) => {
               return row["ID"];
             });
@@ -73,6 +75,8 @@ function Sheet() {
                 })) as unknown[]
               );
             };
+          } else {
+            clearInterval(refreshId);
           }
         }, 3000);
 
@@ -87,10 +91,6 @@ function Sheet() {
       setChangedVersions((prev: any) => [
         ...prev,
         ...responseData.filter((r: any) => {
-          console.log(
-            values.find((v) => v[2] == r.id),
-            r.id
-          );
           return (
             values.find((v) => String(v[2]) === String(r.id)) &&
             (values.find((v) => String(v[2]) === String(r.id)) as any)[0] !==
@@ -101,71 +101,111 @@ function Sheet() {
     }
   }, [responseData, values, values?.length]);
 
+  console.log(changedVersions);
+
   return (
-    <div>
-      <p>
+    <div className="bg-gray-100 p-4">
+      <p className="text-sm text-gray-500 mb-2">
         پیشرفت: {`${progress} از ${values.length > 0 ? values.length : "-"}`}
       </p>
-      <div style={{ display: "flex", background: "#e0e0e0" }}>
-        <span
-          style={{
-            display: "flex",
-            background: "blue",
-            height: "20px",
-            width: `${(progress / values.length) * 100}%`,
-          }}
+      <div className="h-2 bg-gray-300 rounded-md mb-4">
+        <div
+          className="h-full rounded-md bg-blue-500"
+          style={{ width: `${(progress / values.length) * 100}%` }}
+        ></div>
+      </div>
+
+      {changedVersions.length > 0 ? (
+        <ul
+          dir="ltr"
+          className="bg-gray-900 rounded-xl p-2 overflow-y-auto max-h-[450px]"
+        >
+          {[...new Set(changedVersions)].map((i: any) =>
+            i ? (
+              <a
+                href={
+                  values.find((v) => Number(v[2]) === i.id)
+                    ? values.find((v) => Number(v[2]) === i.id)?.[3]
+                    : undefined
+                }
+                target="_blank"
+                key={i.id}
+              >
+                <li className="text-green-400 py-1 text-xs font-mono">
+                  {`[NEW VERSION!] ${
+                    values.find((v) => Number(v[2]) === i.id)?.[1]
+                  } | Version: ${
+                    values.find((v) => Number(v[2]) === i.id)?.[0]
+                  } | ID: ${values.find((v) => Number(v[2]) === i.id)?.[2]}`}
+                </li>
+              </a>
+            ) : null
+          )}
+        </ul>
+      ) : null}
+
+      {/* File Uploader */}
+      <div className="mt-4">
+        <label className="text-sm font-medium text-gray-700">Upload File</label>
+        <input
+          type="file"
+          name="file"
+          onChange={changeHandler}
+          accept=".csv"
+          className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
         />
       </div>
 
-      <ul>
-        {[...Array.from(new Set(changedVersions))].map((i: any) =>
-          i ? (
-            <a
-              href={
-                values.find((v) => Number(v[2]) === i.id)
-                  ? values.find((v) => Number(v[2]) === i.id)?.[3]
-                  : undefined
-              }
-              target="_blank"
-            >
-              <li key={i.id}>
-                {JSON.stringify(values.find((v) => Number(v[2]) === i.id))}
-              </li>
-            </a>
-          ) : null
-        )}
-      </ul>
-      {/* File Uploader */}
-      <input
-        type="file"
-        name="file"
-        onChange={changeHandler}
-        accept=".csv"
-        style={{ display: "block", margin: "10px auto" }}
-      />
-      <br />
-      <br />
       {/* Table */}
-      <table>
-        <thead>
-          <tr>
-            {tableRows.map((rows, index) => {
-              return <th key={index}>{rows}</th>;
+      <div className="mt-8 flex flex-row w-full justify-end">
+        {(progress / values.length) * 100 > 99 && (
+          <CSVLink
+            className="bg-blue-500 text-white px-4 py-2 rounded-xl self-end"
+            data={changedVersions as any}
+            headers={[
+              { label: "id", key: "id" },
+              { label: "version", key: "version" },
+            ]}
+          >
+            دانلود فایل خروجی
+          </CSVLink>
+        )}
+
+        {/* <table className="w-full table-fixed">
+          <thead>
+            <tr className="bg-gray-50">
+              {tableRows.map((rows, index) => {
+                return (
+                  <th
+                    key={index}
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    {rows}
+                  </th>
+                );
+              })}
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200 max-h-[500px] overflow-x-hidden">
+            {values.map((value: any, index) => {
+              return (
+                <tr key={index} className="hover:bg-gray-50 self-center">
+                  {value.map((val: any, i: number) => {
+                    return (
+                      <td
+                        key={i}
+                        className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                      >
+                        {val}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
             })}
-          </tr>
-        </thead>
-        <tbody>
-          {values.map((value: any, index) => {
-            return (
-              <tr key={index}>
-                {value.map((val: any, i: number) => {
-                  return <td key={i}>{val}</td>;
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+          </tbody>
+        </table> */}
+      </div>
     </div>
   );
 }
