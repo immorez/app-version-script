@@ -14,6 +14,8 @@ function Sheet() {
 
   const [responseData, setResponseData] = useState<unknown[]>([]);
 
+  const [progress, setProgress] = useState(0);
+
   const changeHandler = (event: any) => {
     // Passing file data (event.target.files[0]) to parse using Papa.parse
     Papa.parse(event.target.files[0], {
@@ -56,6 +58,8 @@ function Sheet() {
 
             take = take + 50;
 
+            setProgress((p) => p + 50);
+
             const script = document.createElement("script");
             script.src = `https://itunes.apple.com/lookup?id=${ids.join(
               ","
@@ -70,7 +74,7 @@ function Sheet() {
               );
             };
           }
-        }, 10000);
+        }, 2000);
 
         return responseData;
       },
@@ -93,6 +97,20 @@ function Sheet() {
 
   return (
     <div>
+      <p>
+        پیشرفت: {`${progress} از ${values.length > 0 ? values.length : "-"}`}
+      </p>
+      <div style={{ display: "flex", background: "#e0e0e0" }}>
+        <span
+          style={{
+            display: "flex",
+            background: "blue",
+            height: "20px",
+            width: `${(progress / values.length) * 100}%`,
+          }}
+        />
+      </div>
+
       <ul>
         {[...Array.from(new Set(changedVersions))].map((i: any) =>
           i ? (
