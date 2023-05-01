@@ -42,7 +42,7 @@ function Sheet() {
 
         let ids: string[] = [];
 
-        let take = 50;
+        let take = 200;
 
         const responseData: any[] = [];
 
@@ -52,13 +52,13 @@ function Sheet() {
 
         setInterval(() => {
           if (take < rowsWithIds.length) {
-            ids = rowsWithIds.slice(take - 50, take).map((row: any) => {
+            ids = rowsWithIds.slice(take - 200, take).map((row: any) => {
               return row["ID"];
             });
 
-            take = take + 50;
+            take = take + 200;
 
-            setProgress((p) => p + 50);
+            setProgress((p) => p + 200);
 
             const script = document.createElement("script");
             script.src = `https://itunes.apple.com/lookup?id=${ids.join(
@@ -74,7 +74,7 @@ function Sheet() {
               );
             };
           }
-        }, 2000);
+        }, 20000);
 
         return responseData;
       },
