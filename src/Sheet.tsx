@@ -68,13 +68,13 @@ function Sheet() {
             (window as any).handleResponse = function (response: AppData) {
               setResponseData(
                 response.results.map((r) => ({
-                  id: r.artistId,
+                  id: r.trackId,
                   version: r.version,
                 })) as unknown[]
               );
             };
           }
-        }, 20000);
+        }, 3000);
 
         return responseData;
       },
@@ -86,11 +86,17 @@ function Sheet() {
     if (responseData?.length > 0 && values?.length > 0) {
       setChangedVersions((prev: any) => [
         ...prev,
-        responseData.find(
-          (r: any) =>
-            values.find((v) => Number(v[2]) === r.id) &&
-            (values.find((v) => Number(v[2]) === r.id) as any)[0] !== r.version
-        ),
+        ...responseData.filter((r: any) => {
+          console.log(
+            values.find((v) => v[2] == r.id),
+            r.id
+          );
+          return (
+            values.find((v) => String(v[2]) === String(r.id)) &&
+            (values.find((v) => String(v[2]) === String(r.id)) as any)[0] !==
+              String(r.version)
+          );
+        }),
       ]);
     }
   }, [responseData, values, values?.length]);
