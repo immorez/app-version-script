@@ -17,14 +17,14 @@ function Sheet() {
   const changeHandler = (event: any) => {
     // Passing file data (event.target.files[0]) to parse using Papa.parse
     Papa.parse(event.target.files[0], {
-      header: ["VERSION", "NAME", "ID", "LINK"],
+      header: true,
       skipEmptyLines: true,
       complete: function (results: any) {
         const rowsArray: any = [];
         const valuesArray: any = [];
 
         // Iterating data to get column name and their values
-        results.data.map((d) => {
+        results.data.map((d: any) => {
           rowsArray.push(Object.keys(d));
           valuesArray.push(Object.values(d));
         });

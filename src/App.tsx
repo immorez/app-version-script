@@ -3,7 +3,7 @@ import { AppData } from "./types";
 import Sheet from "./Sheet";
 
 function App() {
-  const [, setError] = useState("");
+  const [, setError] = useState<string>("");
   const [id] = useState("");
   const [data, setData] = useState<AppData>();
 
@@ -25,7 +25,7 @@ function App() {
         if (error instanceof SyntaxError) {
           setError("Invalid JSON in response");
         } else {
-          setError(error.message);
+          setError(error.message as string);
         }
       }
     },
