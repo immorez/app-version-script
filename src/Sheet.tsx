@@ -115,32 +115,34 @@ function Sheet() {
         ></div>
       </div>
 
-      <ul
-        dir="ltr"
-        className="bg-gray-900 rounded-xl p-2 overflow-y-auto max-h-[450px]"
-      >
-        {[...new Set(changedVersions)].map((i: any) =>
-          i ? (
-            <a
-              href={
-                values.find((v) => Number(v[2]) === i.id)
-                  ? values.find((v) => Number(v[2]) === i.id)?.[3]
-                  : undefined
-              }
-              target="_blank"
-              key={i.id}
-            >
-              <li className="text-green-400 py-1 text-xs font-mono">
-                {`[NEW VERSION!] ${
-                  values.find((v) => Number(v[2]) === i.id)?.[1]
-                } | Version: ${
-                  values.find((v) => Number(v[2]) === i.id)?.[0]
-                } | ID: ${values.find((v) => Number(v[2]) === i.id)?.[2]}`}
-              </li>
-            </a>
-          ) : null
-        )}
-      </ul>
+      {changedVersions.length > 0 ? (
+        <ul
+          dir="ltr"
+          className="bg-gray-900 rounded-xl p-2 overflow-y-auto max-h-[450px]"
+        >
+          {[...new Set(changedVersions)].map((i: any) =>
+            i ? (
+              <a
+                href={
+                  values.find((v) => Number(v[2]) === i.id)
+                    ? values.find((v) => Number(v[2]) === i.id)?.[3]
+                    : undefined
+                }
+                target="_blank"
+                key={i.id}
+              >
+                <li className="text-green-400 py-1 text-xs font-mono">
+                  {`[NEW VERSION!] ${
+                    values.find((v) => Number(v[2]) === i.id)?.[1]
+                  } | Version: ${
+                    values.find((v) => Number(v[2]) === i.id)?.[0]
+                  } | ID: ${values.find((v) => Number(v[2]) === i.id)?.[2]}`}
+                </li>
+              </a>
+            ) : null
+          )}
+        </ul>
+      ) : null}
 
       {/* File Uploader */}
       <div className="mt-4">
@@ -156,18 +158,16 @@ function Sheet() {
 
       {/* Table */}
       <div className="mt-8 flex flex-row w-full justify-end">
-        {(progress / values.length) * 100 > 99 && (
-          <CSVLink
-            className="bg-blue-500 text-white px-4 py-2 rounded-xl self-end"
-            data={changedVersions as any}
-            headers={[
-              { label: "id", key: "id" },
-              { label: "version", key: "version" },
-            ]}
-          >
-            دانلود فایل خروجی
-          </CSVLink>
-        )}
+        <CSVLink
+          className="bg-blue-500 text-white px-4 py-2 rounded-xl self-end"
+          data={changedVersions as any}
+          headers={[
+            { label: "id", key: "id" },
+            { label: "version", key: "version" },
+          ]}
+        >
+          دانلود فایل خروجی
+        </CSVLink>
 
         {/* <table className="w-full table-fixed">
           <thead>
