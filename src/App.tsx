@@ -1,10 +1,10 @@
-import { ChangeEvent, FormEvent, useCallback, useState } from "react";
+import { FormEvent, useCallback, useState } from "react";
 import { AppData } from "./types";
 import Sheet from "./Sheet";
 
 function App() {
-  const [error, setError] = useState("");
-  const [id, setId] = useState("");
+  const [, setError] = useState("");
+  const [id] = useState("");
   const [data, setData] = useState<AppData>();
 
   const fetchAppByIdFromItunes = useCallback(
@@ -32,13 +32,13 @@ function App() {
     [id]
   );
 
-  const onIdInputChangeHandler = useCallback(
-    (e: ChangeEvent<HTMLTextAreaElement>) => {
-      e.preventDefault();
-      setId(e.target.value);
-    },
-    []
-  );
+  // const onIdInputChangeHandler = useCallback(
+  //   (e: ChangeEvent<HTMLTextAreaElement>) => {
+  //     e.preventDefault();
+  //     setId(e.target.value);
+  //   },
+  //   []
+  // );
 
   return (
     <div dir="rtl" className="container mx-auto p-4 font-display">

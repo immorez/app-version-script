@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Papa from "papaparse";
-import { App, AppData } from "./types";
+import { AppData } from "./types";
 
 function Sheet() {
   // State to store parsed data
-  const [parsedData, setParsedData] = useState([]);
+  const [, setParsedData] = useState([]);
 
   //State to store table Column name
   const [tableRows, setTableRows] = useState([]);
