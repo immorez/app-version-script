@@ -72,6 +72,7 @@ function Sheet() {
                 response.results.map((r) => ({
                   id: r.trackId,
                   version: r.version,
+                  name: r.trackName,
                 })) as unknown[]
               );
             };
@@ -164,45 +165,11 @@ function Sheet() {
           headers={[
             { label: "id", key: "id" },
             { label: "version", key: "version" },
+            { label: "name", key: "name" },
           ]}
         >
           دانلود فایل خروجی
         </CSVLink>
-
-        {/* <table className="w-full table-fixed">
-          <thead>
-            <tr className="bg-gray-50">
-              {tableRows.map((rows, index) => {
-                return (
-                  <th
-                    key={index}
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    {rows}
-                  </th>
-                );
-              })}
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200 max-h-[500px] overflow-x-hidden">
-            {values.map((value: any, index) => {
-              return (
-                <tr key={index} className="hover:bg-gray-50 self-center">
-                  {value.map((val: any, i: number) => {
-                    return (
-                      <td
-                        key={i}
-                        className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                      >
-                        {val}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table> */}
       </div>
     </div>
   );
