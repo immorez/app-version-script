@@ -72,7 +72,9 @@ function Sheet() {
                 response.results.map((r) => ({
                   id: r.trackId,
                   version: r.version,
-                  name: r.trackName,
+                  name: valuesArray.find(
+                    (v: any) => Number(v[2]) === r.trackId
+                  )?.[1],
                 })) as unknown[]
               );
             };
