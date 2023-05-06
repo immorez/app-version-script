@@ -101,8 +101,9 @@ function Sheet() {
           const digitOnlyVersion = String(r.version).replace(/[^0-9.]/g, "");
           return (
             values.find((v) => String(v[2]) === String(r.id)) &&
-            (values.find((v) => String(v[2]) === String(r.id)) as any)[0] !==
-              String(digitOnlyVersion)
+            String(
+              (values.find((v) => String(v[2]) === String(r.id)) as any)[0]
+            ) !== String(digitOnlyVersion)
           );
         }),
       ]);
