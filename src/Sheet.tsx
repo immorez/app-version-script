@@ -71,10 +71,14 @@ function Sheet() {
               setResponseData(
                 response.results.map((r) => ({
                   id: r.trackId,
-                  version: r.version,
+                  appStoreName: r.trackName,
+                  newVersion: r.version,
                   name: valuesArray.find(
                     (v: any) => Number(v[2]) === r.trackId
                   )?.[1],
+                  currentVersion: valuesArray.find(
+                    (v: any) => Number(v[2]) === r.trackId
+                  )?.[0],
                 })) as unknown[]
               );
             };
@@ -166,8 +170,10 @@ function Sheet() {
           data={changedVersions as any}
           headers={[
             { label: "id", key: "id" },
-            { label: "version", key: "version" },
+            { label: "newVersion", key: "newVersion" },
+            { label: "appStoreName", key: "appStoreName" },
             { label: "name", key: "name" },
+            { label: "currentVersion", key: "currentVersion" },
           ]}
         >
           دانلود فایل خروجی
