@@ -53,7 +53,6 @@ function Sheet() {
 
         const refreshId = setInterval(() => {
           if (take <= rowsWithIds.length) {
-            console.log(take, rowsWithIds.length);
             ids = rowsWithIds.slice(take - 200, take).map((row: any) => {
               return row["ID"];
             });
@@ -92,13 +91,19 @@ function Sheet() {
     });
   };
 
+  console.log(
+    responseData.find((r: any) => String(r.id) === "1440002056") as any,
+    values.find((v) => String(v[2]) === String("1440002056"))
+  );
+
   const [changedVersions, setChangedVersions] = useState<unknown[]>([]);
   useEffect(() => {
     if (responseData?.length > 0 && values?.length > 0) {
       setChangedVersions((prev: any) => [
         ...prev,
         ...responseData.filter((r: any) => {
-          const digitOnlyVersion = String(r.version).replace(/[^0-9.]/g, "");
+          const digitOnlyVersion = String(r.newVersion).replace(/[^0-9.]/g, "");
+
           return (
             values.find((v) => String(v[2]) === String(r.id)) &&
             String(
@@ -109,8 +114,6 @@ function Sheet() {
       ]);
     }
   }, [responseData, values, values?.length]);
-
-  console.log(changedVersions);
 
   return (
     <div className="bg-gray-100 p-4">
