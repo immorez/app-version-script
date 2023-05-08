@@ -78,6 +78,7 @@ function Sheet() {
                   currentVersion: valuesArray.find(
                     (v: any) => Number(v[2]) === r.trackId
                   )?.[0],
+                  price: Number(r.price) > 0 ? r.price : "FREE",
                 })) as unknown[]
               );
             };
@@ -179,6 +180,7 @@ function Sheet() {
             { label: "appStoreName", key: "appStoreName" },
             { label: "name", key: "name" },
             { label: "currentVersion", key: "currentVersion" },
+            { label: "price", key: "price" },
           ]}
         >
           دانلود فایل خروجی
