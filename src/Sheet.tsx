@@ -92,11 +92,6 @@ function Sheet() {
     });
   };
 
-  console.log(
-    responseData.find((r: any) => String(r.id) === "1440002056") as any,
-    values.find((v) => String(v[2]) === String("1440002056"))
-  );
-
   const [changedVersions, setChangedVersions] = useState<unknown[]>([]);
   useEffect(() => {
     if (responseData?.length > 0 && values?.length > 0) {
@@ -148,7 +143,14 @@ function Sheet() {
                   {`[NEW VERSION!] ${
                     values.find((v) => Number(v[2]) === i.id)?.[1]
                   } | Version: ${
-                    values.find((v) => Number(v[2]) === i.id)?.[0]
+                    (
+                      responseData.find(
+                        (res: any) =>
+                          values.find(
+                            (v) => String(v[2]) === String(i.id)
+                          )?.[2] == res.id
+                      ) as any
+                    )?.newVersion
                   } | ID: ${values.find((v) => Number(v[2]) === i.id)?.[2]}`}
                 </li>
               </a>
