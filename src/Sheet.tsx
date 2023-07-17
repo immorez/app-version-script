@@ -142,15 +142,6 @@ function Sheet() {
                 <li className="text-green-400 py-1 text-xs font-mono">
                   {`[NEW VERSION!] ${
                     values.find((v) => Number(v[2]) === i.id)?.[1]
-                  } | Version: ${
-                    (
-                      responseData.find(
-                        (res: any) =>
-                          values.find(
-                            (v) => String(v[2]) === String(i.id)
-                          )?.[2] == res.id
-                      ) as any
-                    )?.newVersion
                   } | ID: ${values.find((v) => Number(v[2]) === i.id)?.[2]}`}
                 </li>
               </a>
